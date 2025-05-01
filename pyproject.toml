@@ -8,4 +8,5 @@ dependencies = [
     "gradio>=5.28.0",
     "gradio-client>=1.10.0",
     "numpy>=2.2.5",
+    "requests>=2.32.3",
 ]

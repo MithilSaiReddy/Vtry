@@ -745,6 +745,7 @@ dependencies = [
     { name = "gradio" },
     { name = "gradio-client" },
     { name = "numpy" },
+    { name = "requests" },
 ]
 
 [package.metadata]
@@ -752,6 +753,7 @@ requires-dist = [
     { name = "gradio", specifier = ">=5.28.0" },
     { name = "gradio-client", specifier = ">=1.10.0" },
     { name = "numpy", specifier = ">=2.2.5" },
+    { name = "requests", specifier = ">=2.32.3" },
 ]
 
 [[package]]
