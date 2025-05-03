@@ -7,6 +7,13 @@ from gradio_client import Client, handle_file
 
 from gradio_client.client import re
 from numpy import array
+
+
+
+
+PORT = int(os.environ.get("PORT", 8000))
+
+
 # 1. Load your HF token from env
 HF_TOKEN = os.getenv("HF_TOKEN")  # export HF_TOKEN="hf_..."
 # 1) Connect to the Leffa Gradio app’s predict endpoint
@@ -52,15 +59,15 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.Markdown("## V_TRY DEMO")
     with gr.Row():
         with gr.Column():
-            gr.Markdown("####UPLOAD PERSON IMAGE")
+           # gr.Markdown("####UPLOAD PERSON IMAGE")
             src = gr.Image(sources="upload", type="filepath",
                            label="Person Image")
         with gr.Column():
-            gr.Markdown("####UPLOAD GARMENT IMAGE")
+            #gr.Markdown("####UPLOAD GARMENT IMAGE")
             ref = gr.Image(sources="upload", type="filepath",
                            label="Garment Image")
         with gr.Column():
-            gr.Markdown("####Select the Garment type")
+           # gr.Markdown("####Select the Garment type")
             garment_type = gr.Radio(
                 choices=[("Upper", "upper_body"),
                          ("Lower", "lower_body"), ("Dress", "dresses")],
@@ -68,7 +75,7 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 label="Garment Type",
             )
         with gr.Column():
-            gr.Markdown("####Output Image")
+            gr.Markdown("##Output Image")
             out = gr.Image(type="filepath", label="Result",)
             with gr.Row():
                 btn = gr.Button("Generate")
@@ -76,7 +83,9 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
         btn.click(virtual_tryon, [src, ref, garment_type], out)
 
 demo.launch(
-    share=True,
+	server_name="0.0.0.0",
+	server_port=PORT
+    share=False,
     show_error=True,
     pwa=True,
 )
