@@ -1,14 +1,20 @@
 <html>
 <head>
 	<title>V_TRY DEMO</title>
+	<link rel="stylesheet" href="style.css">
+	<script
+	type="module"
+	src="https://gradio.s3-us-west-2.amazonaws.com/5.28.0/gradio.js"
+	></script>
+
 </head>	
 <body>
-<iframe
-	src="https://eaglebelt-vtry.hf.space"
-	frameborder=None
-	width="100%"
-	height="100%"
-	allowfullscreen="True"
-></iframe>
+
+	<gradio-app
+	 src="https://eaglebelt-vtry.hf.space"
+	 eager="true"
+	 initial_height="100%"
+	 ></gradio-app>
+
 </body>
 </html>
