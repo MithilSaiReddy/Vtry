@@ -8,11 +8,10 @@ from gradio_client import Client, handle_file
 from gradio_client.client import re
 from numpy import array
 
-
-
+#variables
+title = "V_TRY"
 
 PORT = int(os.environ.get("PORT", 8000))
-
 
 # 1. Load your HF token from env
 HF_TOKEN = os.getenv("HF_TOKEN")  # export HF_TOKEN="hf_..."
@@ -48,43 +47,49 @@ def virtual_tryon(
         vt_model_type="viton_hd",
         vt_garment_type=garment_type,
         vt_repaint=False,
-        api_name="/leffa_predict_vt",)
+        api_name="/leffa_predict_vt",
+    )
     # result[0] is the generated image filepath on the server
     return result[0]  # Gradio will download & display this file
 
     # 5) Gradio UI
 
 
-with gr.Blocks(theme=gr.themes.Soft()) as demo:
+with gr.Blocks(title=title, theme=gr.themes.Soft()) as demo:
     gr.Markdown("## V_TRY DEMO")
     with gr.Row():
         with gr.Column():
-           # gr.Markdown("####UPLOAD PERSON IMAGE")
-            src = gr.Image(sources="upload", type="filepath",
+            # gr.Markdown("####UPLOAD PERSON IMAGE")
+            src = gr.Image(sources="upload",
+                           type="filepath",
                            label="Person Image")
         with gr.Column():
             #gr.Markdown("####UPLOAD GARMENT IMAGE")
-            ref = gr.Image(sources="upload", type="filepath",
+            ref = gr.Image(sources="upload",
+                           type="filepath",
                            label="Garment Image")
         with gr.Column():
-           # gr.Markdown("####Select the Garment type")
+            # gr.Markdown("####Select the Garment type")
             garment_type = gr.Radio(
-                choices=[("Upper", "upper_body"),
-                         ("Lower", "lower_body"), ("Dress", "dresses")],
+                choices=[("Upper", "upper_body"), ("Lower", "lower_body"),
+                         ("Dress", "dresses")],
                 value="upper_body",
                 label="Garment Type",
             )
         with gr.Column():
             gr.Markdown("##Output Image")
-            out = gr.Image(type="filepath", label="Result",)
+            out = gr.Image(
+                type="filepath",
+                label="Result",
+            )
             with gr.Row():
                 btn = gr.Button("Generate")
 
         btn.click(virtual_tryon, [src, ref, garment_type], out)
 
 demo.launch(
-	server_name="0.0.0.0",
-	server_port=PORT,
+    server_name="0.0.0.0",
+    server_port=PORT,
     share=False,
     show_error=True,
     pwa=True,
