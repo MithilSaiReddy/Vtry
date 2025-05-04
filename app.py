@@ -85,10 +85,14 @@ with gr.Blocks(title=title, theme=gr.themes.Soft()) as demo:
                 label="Garment Type",
             )
         with gr.Column():
-            gr.Markdown("##Output Image")
+            gr.Markdown("")
             out = gr.Image(
                 type="filepath",
                 label="Result",
+                format="png",
+                height="768",
+                width="512",
+                image_mode="RGB",
             )
             with gr.Row():
                 btn = gr.Button("Generate")
@@ -97,7 +101,7 @@ with gr.Blocks(title=title, theme=gr.themes.Soft()) as demo:
         file_input.change(fn=None,
                           inputs=None,
                           outputs=[src, ref],
-        js="""
+                          js="""
           if (!window.imageCompression) {
             const s=document.createElement('script');
             s.src='https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.0/dist/browser-image-compression.js';
