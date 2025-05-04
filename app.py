@@ -57,17 +57,25 @@ def virtual_tryon(
 
 with gr.Blocks(title=title, theme=gr.themes.Soft()) as demo:
     gr.Markdown("## V_TRY DEMO")
+
+    #Test for image compression
+    file_input = gr.HTML(
+        '<input type="file" id="fileElem" accept="image/*" style="display:none" />'
+    )
+
     with gr.Row():
         with gr.Column():
             # gr.Markdown("####UPLOAD PERSON IMAGE")
             src = gr.Image(sources="upload",
                            type="filepath",
-                           label="Person Image")
+                           label="Person Image",
+                           elem_id="personImg")
         with gr.Column():
             #gr.Markdown("####UPLOAD GARMENT IMAGE")
             ref = gr.Image(sources="upload",
                            type="filepath",
-                           label="Garment Image")
+                           label="Garment Image",
+                           elem_id="garmentImg")
         with gr.Column():
             # gr.Markdown("####Select the Garment type")
             garment_type = gr.Radio(
@@ -84,6 +92,25 @@ with gr.Blocks(title=title, theme=gr.themes.Soft()) as demo:
             )
             with gr.Row():
                 btn = gr.Button("Generate")
+
+        #test for image compression
+        file_input.change(fn=None,
+                          inputs=None,
+                          outputs=[src, ref],
+        js="""
+          if (!window.imageCompression) {
+            const s=document.createElement('script');
+            s.src='https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.0/dist/browser-image-compression.js';
+            document.head.appendChild(s);
+            await new Promise(res=>s.onload=res);
+          }
+          const file=document.getElementById('fileElem').files[0];
+          const options={maxSizeMB:1, maxWidthOrHeight:1024, useWebWorker:true};
+          const compressed=await imageCompression(file, options);
+          const reader=new FileReader();
+          reader.onload=()=>{ src.setValue(reader.result); ref.setValue(reader.result); };
+          reader.readAsDataURL(compressed);
+        """)
 
         btn.click(virtual_tryon, [src, ref, garment_type], out)
 
